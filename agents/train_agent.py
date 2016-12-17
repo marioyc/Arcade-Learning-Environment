@@ -11,12 +11,13 @@ import cv2
 from ale_python_interface import ALEInterface
 
 # custom imports
+import common.build_agent as build_agent
 import common.file_utils as file_utils
 import common.screen_utils as screen_utils
-import build_agent
 
 ######## training parameters #########
-LEARNING_ALGORITHM = build_agent.build_sarsa_lambda_agent()
+FEATURE_EXTRACTOR = feature_extractors.BasicFeature()
+LEARNING_ALGORITHM = build_agent.build_sarsa_lambda_agent(FEATURE_EXTRACTOR)
 NUM_EPISODES = 5000#3300
 EXPLORATION_REDUCTION_AMOUNT = 0#.0005
 MINIMUM_EXPLORATION_EPSILON = 0#.1
@@ -175,7 +176,7 @@ if __name__ == '__main__':
     ale.loadROM(gamepath)
     actions = ale.getMinimalActionSet()
     agent.actions = actions;
-    print actions
+    print agent.actions
     if LOAD_WEIGHTS:
         agent.weights = file_utils.load_weights(WEIGHTS_FILENAME)
     rewards = train_agent(gamepath, agent,
